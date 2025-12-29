@@ -1,6 +1,8 @@
 package com.llanerito.manu.api.controllers;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -33,40 +35,48 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @CrossOrigin(origins = "http://127.0.0.1:5501")
 public class CategoryController {
-    
+
     @Autowired
     private final CategoryService categoryService;
-    
+
     @PostMapping
-    public ResponseEntity<CategoryResponse> create(@RequestBody CategoryRequest CategoryRequest){
-        return ResponseEntity.ok(this.categoryService.create(CategoryRequest));
+    public ResponseEntity<List<CategoryResponse>> create(@RequestBody List<CategoryRequest> categorys) {
+        List<CategoryResponse> responses = categorys.stream()
+                .map(request -> {
+                    CategoryRequest category = new CategoryRequest();
+                    category.setName(request.getName());
+                    return this.categoryService.create(category);
+                })
+                .collect(Collectors.toList());
+
+                return ResponseEntity.ok(responses);
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<CategoryResponse> getById(@PathVariable Long id){
+    public ResponseEntity<CategoryResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(this.categoryService.getById(id));
     }
 
     @GetMapping
     public ResponseEntity<Page<CategoryResponse>> getAll(
-        @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "10") int size,
-        @RequestHeader(required = false) SortType sortType
-    ){
-        if (Objects.isNull(sortType)) sortType = SortType.NONE;
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestHeader(required = false) SortType sortType) {
+        if (Objects.isNull(sortType))
+            sortType = SortType.NONE;
         return ResponseEntity.ok(this.categoryService.getAll(page - 1, size, sortType));
     }
 
     @PutMapping(path = "/{id}")
-    public ResponseEntity<CategoryResponse> update(@Validated @RequestBody CategoryRequest categoryRequest, @PathVariable Long id){
+    public ResponseEntity<CategoryResponse> update(@Validated @RequestBody CategoryRequest categoryRequest,
+            @PathVariable Long id) {
         return ResponseEntity.ok(this.categoryService.update(categoryRequest, id));
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         this.categoryService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 
 }
