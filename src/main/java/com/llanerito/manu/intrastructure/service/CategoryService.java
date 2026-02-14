@@ -84,9 +84,7 @@ public class CategoryService implements ICategoryService {
 
     private CategoryResponse entityToResponse(com.llanerito.manu.domain.entities.Category entity){
         List<ProductSecundaryResponse> productList = new ArrayList<>();
-        if(entity.getProducts() == null) {
-            entity.setProducts(null);
-        }else {
+        
             productList = entity.getProducts().stream().map(
             productEntity -> {
                 ProductSecundaryResponse product = new ProductSecundaryResponse();
@@ -94,12 +92,13 @@ public class CategoryService implements ICategoryService {
                 return product;
             }
         ).collect(Collectors.toList());
-    }
+
+        int totalProducts = productList == null ? 0 : productList.size();
 
         return  CategoryResponse.builder()
             .id(entity.getId())
             .name(entity.getName())
-            .numberProducts(entity.getNumberProducts())
+            .numberProducts(totalProducts)
             .productList(productList).build();
 
     }
@@ -108,6 +107,7 @@ public class CategoryService implements ICategoryService {
         Category category = this.categoryRepository.findById(id).orElseThrow();
         return category;
     }
+
 
     // private List<Product> idConvertToList(Long id){
     //     Product product = this.productRepository.findById(id).orElseThrow();
