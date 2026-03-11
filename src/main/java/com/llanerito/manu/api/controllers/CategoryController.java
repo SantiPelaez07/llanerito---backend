@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -36,7 +35,6 @@ import lombok.AllArgsConstructor;
 @CrossOrigin(origins = "http://127.0.0.1:5501")
 public class CategoryController {
 
-    @Autowired
     private final CategoryService categoryService;
 
     @PostMapping

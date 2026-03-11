@@ -3,7 +3,6 @@ package com.llanerito.manu.api.controllers;
 import java.util.List;
 import java.util.Objects;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -35,7 +34,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 @AllArgsConstructor
 public class ProductController {
 
-    @Autowired
     private final ProductService productService;
 
     @PostMapping
@@ -50,7 +48,13 @@ public class ProductController {
 
     @GetMapping(path = "/category")
     public ResponseEntity<List<ProductResponse>> getProductByCategory(@RequestParam("categoryName") String categoryName){
-        List<ProductResponse> products = productService.getByNameCategory(categoryName);
+        List<ProductResponse> products = productService.getByCategoryName(categoryName);
+        return ResponseEntity.ok(products);
+    }
+
+    @GetMapping(path = "/search")
+    public ResponseEntity<List<ProductResponse>> getProductsByName(@RequestParam("name") String name){
+        List<ProductResponse> products = productService.getByProductsName(name);
         return ResponseEntity.ok(products);
     }
 

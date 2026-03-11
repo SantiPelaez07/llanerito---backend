@@ -3,7 +3,6 @@ package com.llanerito.manu.intrastructure.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -26,7 +25,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ProductService implements IProductService{
 
-    @Autowired
+    
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
 
@@ -76,8 +75,12 @@ public class ProductService implements IProductService{
         return this.productRepository.findAll(pagination).map(this::entityToResponse);
     }
 
-    public List<ProductResponse> getByNameCategory(String name){
+    public List<ProductResponse> getByCategoryName(String name){
         return this.listToListResponse(this.productRepository.findByCategory_NameIgnoreCase(name));
+    }
+
+    public List<ProductResponse> getByProductsName(String name){
+        return this.listToListResponse(this.productRepository.findByNameContainingIgnoreCase(name));
     }
 
     private List<ProductResponse> listToListResponse(List<Product> productList){

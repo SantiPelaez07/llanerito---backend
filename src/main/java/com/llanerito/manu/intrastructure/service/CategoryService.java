@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -16,9 +15,7 @@ import com.llanerito.manu.api.request.CategoryRequest;
 import com.llanerito.manu.api.response.CategoryResponse;
 import com.llanerito.manu.api.response.secundaryResponse.ProductSecundaryResponse;
 import com.llanerito.manu.domain.entities.Category;
-// import com.llanerito.manu.domain.entities.Product;
 import com.llanerito.manu.domain.repositories.CategoryRepository;
-// import com.llanerito.manu.domain.repositories.ProductRepository;
 import com.llanerito.manu.intrastructure.abstract_service.ICategoryService;
 import com.llanerito.manu.utils.SortType;
 
@@ -28,7 +25,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CategoryService implements ICategoryService {
 
-    @Autowired
     private final CategoryRepository categoryRepository;
     // private final ProductRepository productRepository;
 
